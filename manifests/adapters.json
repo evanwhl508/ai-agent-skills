@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "targets": {
+    "codex": {
+      "displayName": "Codex",
+      "defaultInstallPath": "$CODEX_HOME/skills or ~/.codex/skills",
+      "adapterFiles": [".codex-plugin/plugin.json", "skills/*/agents/openai.yaml"],
+      "notes": "Install the full canonical skill folder. Codex uses SKILL.md for behavior and agents/openai.yaml for UI-facing metadata."
+    },
+    "claude-code": {
+      "displayName": "Claude Code",
+      "defaultInstallPath": "$CLAUDE_HOME/skills or ~/.claude/skills",
+      "adapterFiles": [".claude-plugin/plugin.json"],
+      "notes": "Install the same canonical SKILL.md and references. Claude-specific commands or hooks should be thin wrappers, not duplicated skill logic."
+    },
+    "generic": {
+      "displayName": "Generic folder",
+      "defaultInstallPath": "./skills",
+      "adapterFiles": [],
+      "notes": "Copies SKILL.md and references to a selected directory for harnesses without a formal adapter."
+    }
+  }
+}

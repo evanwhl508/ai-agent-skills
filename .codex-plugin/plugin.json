@@ -1,0 +1,35 @@
+{
+  "name": "ai-agent-skills",
+  "version": "0.1.0",
+  "description": "Cross-harness open-source AI-agent skills collection.",
+  "author": {
+    "name": "Evan Wong",
+    "url": "https://github.com/evanwhl508"
+  },
+  "homepage": "https://github.com/evanwhl508/ai-agent-skills",
+  "repository": "https://github.com/evanwhl508/ai-agent-skills",
+  "license": "MIT",
+  "keywords": [
+    "ai-agents",
+    "agent-skills",
+    "prompt-engineering",
+    "codex",
+    "claude-code"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AI Agent Skills",
+    "shortDescription": "Portable skills for AI-agent workflows.",
+    "longDescription": "A cross-harness collection of AI-agent skills. Canonical workflows live under skills/ and adapters expose them to Codex, Claude Code, Cursor, OpenCode, and future tools.",
+    "developerName": "Evan Wong",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://github.com/evanwhl508/ai-agent-skills",
+    "defaultPrompt": [
+      "Design a production-ready prompt harness.",
+      "Improve this system prompt and add evals.",
+      "Make this LLM output strict JSON."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

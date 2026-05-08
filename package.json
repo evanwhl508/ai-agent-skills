@@ -1,0 +1,43 @@
+{
+  "name": "@evan/ai-agent-skills",
+  "version": "0.1.0",
+  "description": "Cross-harness open-source AI-agent skills collection.",
+  "type": "module",
+  "bin": {
+    "ai-agent-skills": "./bin/ai-agent-skills.js"
+  },
+  "scripts": {
+    "test": "node tests/validate-skill-metadata.js"
+  },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "skills",
+    "manifests",
+    ".codex-plugin",
+    ".claude-plugin",
+    "docs",
+    "bin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evanwhl508/ai-agent-skills.git"
+  },
+  "keywords": [
+    "ai-agents",
+    "agent-skills",
+    "prompt-engineering",
+    "codex",
+    "claude-code",
+    "cursor"
+  ],
+  "author": "Evan Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/evanwhl508/ai-agent-skills/issues"
+  },
+  "homepage": "https://github.com/evanwhl508/ai-agent-skills#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}

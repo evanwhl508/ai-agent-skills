@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "skills": [
+    {
+      "name": "prompt-harness-architect",
+      "displayName": "Prompt Harness Architect",
+      "description": "Design production prompts, chatbot system prompts, LLM task harnesses, structured outputs, and eval cases.",
+      "path": "skills/prompt-harness-architect",
+      "installable": true,
+      "targets": ["codex", "claude-code", "generic"],
+      "tags": [
+        "prompt-engineering",
+        "system-prompts",
+        "llm-harnesses",
+        "evals",
+        "structured-output"
+      ],
+      "references": [
+        "skills/prompt-harness-architect/references/prompt-harness-template.md",
+        "skills/prompt-harness-architect/references/eval-case-template.md",
+        "skills/prompt-harness-architect/references/harness-runtime-notes.md",
+        "skills/prompt-harness-architect/references/source-notes.md"
+      ]
+    }
+  ]
+}

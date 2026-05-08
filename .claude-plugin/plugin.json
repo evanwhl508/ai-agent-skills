@@ -1,0 +1,20 @@
+{
+  "name": "ai-agent-skills",
+  "version": "0.1.0",
+  "description": "Cross-harness open-source AI-agent skills collection.",
+  "author": {
+    "name": "Evan Wong",
+    "url": "https://github.com/evanwhl508"
+  },
+  "homepage": "https://github.com/evanwhl508/ai-agent-skills",
+  "repository": "https://github.com/evanwhl508/ai-agent-skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "keywords": [
+    "ai-agents",
+    "agent-skills",
+    "prompt-engineering",
+    "claude-code",
+    "codex"
+  ]
+}
