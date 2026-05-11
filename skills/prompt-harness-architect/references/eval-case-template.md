@@ -20,6 +20,7 @@ Create at least these cases for non-trivial prompts:
 |---|---|
 | Happy path | Confirms the obvious successful behavior. |
 | Missing information | Confirms the model asks, abstains, or returns null instead of guessing. |
+| Unreadable or low-quality input | Confirms the model says what cannot be determined instead of inventing details. |
 | Ambiguous input | Confirms calibrated uncertainty. |
 | Conflicting evidence | Confirms the model names the conflict instead of hiding it. |
 | Irrelevant/adversarial input | Confirms the model stays on task. |

@@ -28,6 +28,7 @@
     "defaultPrompt": [
       "Design a production-ready prompt harness.",
       "Improve this system prompt and add evals.",
+      "Design a prompt for multimodal document or image review.",
       "Make this LLM output strict JSON."
     ],
     "brandColor": "#2563EB"

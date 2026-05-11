@@ -10,8 +10,10 @@ Use this when translating a prompt harness across providers, agent tools, or cod
 | Prompt caching | Whether the provider supports caching long stable prefixes. | Still separate stable context; caching can be added later. |
 | Response prefill | Whether the runtime lets you seed the assistant's first token or content. | Use stricter output instructions and schema validation. |
 | Structured output | Whether JSON schema, tool calls, or response format controls exist. | Ask for strict JSON and validate/retry outside the model. |
+| Multimodal inputs and examples | How images, documents, screenshots, or encoded media are supplied. | Provide text summaries only when native media input is unavailable. |
 | Extended thinking / reasoning traces | Whether hidden reasoning, debug traces, or logs are available. | Use visible intermediate summaries or prior outputs as diagnostic material. |
-| Conversation history | How prior turns, summaries, memory, and tool results are supplied. | Pass only relevant recent turns and structured state. |
+| Conversation history | How prior turns, summaries, memory, and tool results are supplied to the model. | Pass only relevant recent turns and structured state in the runtime's context mechanism. |
+| Evaluation settings | Whether temperature, token budget, and truncation controls are explicit during testing. | Use deterministic settings such as low or zero temperature, plus enough output budget so failures point to the prompt, not sampling or cutoff. |
 
 ## Provider-Neutral Rules
 

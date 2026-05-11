@@ -8,7 +8,7 @@ This repo is designed as a multi-skill collection: one repository, one folder pe
 
 | Skill | Status | Description |
 |---|---|---|
-| [`prompt-harness-architect`](skills/prompt-harness-architect/SKILL.md) | v0.1 | Design, critique, and improve production LLM prompts, chatbot system prompts, task harnesses, structured outputs, and eval cases. |
+| [`prompt-harness-architect`](skills/prompt-harness-architect/SKILL.md) | v0.1 | Design, critique, and improve production LLM prompts, chatbot system prompts, multimodal document/image review harnesses, structured outputs, and eval cases. |
 
 ## Install
 
