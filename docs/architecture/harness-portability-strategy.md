@@ -28,17 +28,25 @@ If the same workflow text has to be edited in several harness-specific places, t
 Preferred command:
 
 ```bash
-npx @evan/ai-agent-skills add prompt-harness-architect
+npx skills add evanwhl508/ai-agent-skills --skill prompt-harness-architect
 ```
 
 The CLI must support both single-skill and all-skills installation:
 
 ```bash
-npx @evan/ai-agent-skills add prompt-harness-architect
-npx @evan/ai-agent-skills add all
-npx @evan/ai-agent-skills add prompt-harness-architect --target codex
-npx @evan/ai-agent-skills add all --target claude-code
+npx skills add evanwhl508/ai-agent-skills --list
+npx skills add evanwhl508/ai-agent-skills --skill prompt-harness-architect
+npx skills add evanwhl508/ai-agent-skills --skill '*'
+npx skills add evanwhl508/ai-agent-skills --skill prompt-harness-architect -a codex
+npx skills add evanwhl508/ai-agent-skills --skill '*' -a claude-code
+npx skills add evanwhl508/ai-agent-skills --all
 ```
+
+`--skill '*'` selects every skill in the repo for the chosen agent target. `--all` is broader: it expands to every skill and every agent, with prompts skipped.
+
+The repo may also ship a custom helper CLI as a local development and fallback path, but public docs should lead with `npx skills`.
+
+The upstream `npx skills` CLI copies the canonical skill folder as-is. Harness-specific pruning such as dropping `agents/` for non-Codex targets is a feature of this repo's local helper CLI, not the upstream installer.
 
 ## Adapter Rules
 
@@ -54,9 +62,9 @@ npx @evan/ai-agent-skills add all --target claude-code
 | Harness | Support level | Notes |
 |---|---|---|
 | Codex | First-class | Canonical skill + `.codex-plugin` metadata + `agents/openai.yaml`. |
-| Claude Code | First-class | Canonical skill + `.claude-plugin` metadata. |
-| Cursor | Planned | Rules or copied skill adapter after initial release. |
-| OpenCode / OpenClaw | Planned | Package/install adapter after initial release. |
+| Claude Code | Initial | Canonical skill + `.claude-plugin` metadata; native commands/hooks are planned. |
+| Cursor | Planned | Stub adapter notes only. |
+| OpenCode / OpenClaw | Planned | Stub adapter notes only. |
 
 ## Reference Practice
 

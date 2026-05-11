@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
 const skillsManifestPath = path.join(repoRoot, "manifests", "skills.json");
+const adaptersManifestPath = path.join(repoRoot, "manifests", "adapters.json");
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -20,10 +21,10 @@ Usage:
   ai-agent-skills add <skill-name|all> [--target codex|claude-code|generic] [--dir <path>] [--force] [--dry-run]
 
 Examples:
-  npx @evan/ai-agent-skills list
-  npx @evan/ai-agent-skills add prompt-harness-architect
-  npx @evan/ai-agent-skills add all --target codex
-  npx @evan/ai-agent-skills add prompt-harness-architect --target claude-code --force
+  node bin/ai-agent-skills.js list
+  node bin/ai-agent-skills.js add prompt-harness-architect
+  node bin/ai-agent-skills.js add all --target codex
+  node bin/ai-agent-skills.js add prompt-harness-architect --target claude-code --force
 `;
   console.log(text.trim());
   process.exit(exitCode);
@@ -104,14 +105,17 @@ function copyRecursive(src, dest, { force, dryRun, filter }) {
   });
 }
 
-function skillFilterForTarget(target) {
-  if (target === "codex") {
-    return () => true;
-  }
-
+function skillFilterForTarget(sourceRoot, adapterConfig) {
+  const excludes = adapterConfig.excludePaths || [];
   return (src) => {
-    const relative = path.relative(repoRoot, src);
-    return !relative.includes(`${path.sep}agents${path.sep}openai.yaml`);
+    const relative = path.relative(sourceRoot, src).split(path.sep).join("/");
+    if (!relative) {
+      return true;
+    }
+
+    return !excludes.some((excludePath) => (
+      relative === excludePath || relative.startsWith(`${excludePath}/`)
+    ));
   };
 }
 
@@ -135,9 +139,14 @@ function resolveSkills(manifest, subject) {
   return [skill];
 }
 
-function installSkill(skill, options) {
+function installSkill(skill, options, adaptersManifest) {
   if (!skill.targets.includes(options.target)) {
     throw new Error(`${skill.name} does not support target '${options.target}'.`);
+  }
+
+  const adapterConfig = adaptersManifest.targets[options.target];
+  if (!adapterConfig) {
+    throw new Error(`Missing adapter configuration for target '${options.target}'.`);
   }
 
   const installRoot = path.resolve(options.dir || defaultInstallDir(options.target));
@@ -147,7 +156,7 @@ function installSkill(skill, options) {
   copyRecursive(source, destination, {
     force: options.force,
     dryRun: options.dryRun,
-    filter: skillFilterForTarget(options.target)
+    filter: skillFilterForTarget(source, adapterConfig)
   });
 
   console.log(`${options.dryRun ? "[dry-run] " : ""}Installed ${skill.name} -> ${destination}`);
@@ -161,6 +170,7 @@ function main() {
 
   const options = parseArgs(argv);
   const manifest = readJson(skillsManifestPath);
+  const adaptersManifest = readJson(adaptersManifestPath);
 
   if (options.command === "list") {
     listSkills(manifest);
@@ -174,7 +184,7 @@ function main() {
 
     const skills = resolveSkills(manifest, options.subject);
     for (const skill of skills) {
-      installSkill(skill, options);
+      installSkill(skill, options, adaptersManifest);
     }
     return;
   }

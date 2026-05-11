@@ -1,5 +1,5 @@
 {
-  "name": "@evan/ai-agent-skills",
+  "name": "@evanwhl508/ai-agent-skills",
   "version": "0.1.0",
   "description": "Cross-harness open-source AI-agent skills collection.",
   "type": "module",
@@ -16,6 +16,8 @@
     "manifests",
     ".codex-plugin",
     ".claude-plugin",
+    ".cursor",
+    ".opencode",
     "docs",
     "bin"
   ],

@@ -26,3 +26,12 @@ Before opening a pull request, manually test at least one install:
 ```bash
 node bin/ai-agent-skills.js add <skill-name> --target generic --dir /tmp/ai-agent-skills-test --force
 ```
+
+Also verify compatibility with the public `skills` CLI when possible:
+
+```bash
+npx skills add . --list
+npx skills add . --skill <skill-name> -a codex --copy -y
+```
+
+If you are testing from a fork or branch before merge, use a local path or full git URL rather than `evanwhl508/ai-agent-skills`.

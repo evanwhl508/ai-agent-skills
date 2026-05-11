@@ -1,6 +1,6 @@
 ---
 name: prompt-harness-architect
-description: Design, critique, and improve production LLM prompts, chatbot system prompts, and task harnesses. Use when an AI agent needs to create or refine prompts with task context, stable and dynamic context separation, prompt caching, tool or API behavior, examples, output formats, response prefill, hallucination controls, uncertainty handling, conversation history, extended-thinking or reasoning-trace diagnosis, and evaluation cases.
+description: Design system prompts for app or website chatbots and production LLM harnesses; use for context structure, response prefill, conversation history, uncertainty rules, and evals.
 ---
 
 # Prompt Harness Architect
