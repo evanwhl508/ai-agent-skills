@@ -1,0 +1,4 @@
+interface:
+  display_name: "GenAI Search Optimizer"
+  short_description: "Audit a page for Google's AI Overviews and AI Mode using Google Search Central's official guidance."
+  default_prompt: "Audit this URL against Google Search Central's official AI search guidance. Confirm baseline eligibility, classify content as commodity or non-commodity, list technical findings by severity, flag any AEO/GEO myths in play, and produce a prioritized action plan with citations."

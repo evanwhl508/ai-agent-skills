@@ -2,13 +2,14 @@
 
 Cross-harness open-source skills for AI coding agents and chatbot-building workflows.
 
-This repo is designed as a multi-skill collection: one repository, one folder per skill, and thin adapters for each agent harness. It currently ships one skill, with more planned. The canonical skill source lives under `skills/<skill-name>/`; Codex, Claude Code, Cursor, OpenCode, and future harnesses should load or copy from that same source instead of maintaining forks.
+This repo is designed as a multi-skill collection: one repository, one folder per skill, and thin adapters for each agent harness. The canonical skill source lives under `skills/<skill-name>/`; Codex, Claude Code, Cursor, OpenCode, and future harnesses should load or copy from that same source instead of maintaining forks.
 
 ## Skills
 
 | Skill | Status | Description |
 |---|---|---|
 | [`prompt-harness-architect`](skills/prompt-harness-architect/SKILL.md) | v0.1 | Design, critique, and improve production LLM prompts, chatbot system prompts, multimodal document/image review harnesses, structured outputs, and eval cases. |
+| [`genai-search-optimizer`](skills/genai-search-optimizer/SKILL.md) | v0.1 | Audit and improve a page or site for visibility in Google's generative AI search (AI Overviews, AI Mode) using Google Search Central's official guidance. Refuses AEO/GEO myths with citations. |
 
 ## Install
 
@@ -22,6 +23,7 @@ npx skills add evanwhl508/ai-agent-skills --list
 
 # Install one skill
 npx skills add evanwhl508/ai-agent-skills --skill prompt-harness-architect
+npx skills add evanwhl508/ai-agent-skills --skill genai-search-optimizer
 
 # Install all skills in the collection
 npx skills add evanwhl508/ai-agent-skills --skill '*'
@@ -90,7 +92,12 @@ For non-Codex harnesses that only need `SKILL.md` and references, omit or ignore
 ```text
 ai-agent-skills/
 |-- skills/
-|   `-- prompt-harness-architect/
+|   |-- prompt-harness-architect/
+|   |   |-- SKILL.md
+|   |   |-- agents/
+|   |   |   `-- openai.yaml
+|   |   `-- references/
+|   `-- genai-search-optimizer/
 |       |-- SKILL.md
 |       |-- agents/
 |       |   `-- openai.yaml

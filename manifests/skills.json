@@ -23,6 +23,35 @@
         "skills/prompt-harness-architect/references/harness-runtime-notes.md",
         "skills/prompt-harness-architect/references/source-notes.md"
       ]
+    },
+    {
+      "name": "genai-search-optimizer",
+      "displayName": "GenAI Search Optimizer",
+      "description": "Audit and improve a page or site for visibility in Google's generative AI search (AI Overviews, AI Mode) using Google Search Central's official guidance. Refuses AEO/GEO myths with citations.",
+      "path": "skills/genai-search-optimizer",
+      "installable": true,
+      "targets": ["codex", "claude-code", "generic"],
+      "tags": [
+        "seo",
+        "ai-search",
+        "ai-overviews",
+        "ai-mode",
+        "google-search",
+        "content-strategy",
+        "technical-seo",
+        "ecommerce-seo",
+        "local-seo",
+        "geo-myth-bust"
+      ],
+      "references": [
+        "skills/genai-search-optimizer/references/audit-checklist.md",
+        "skills/genai-search-optimizer/references/myth-bust-register.md",
+        "skills/genai-search-optimizer/references/content-rewrite-patterns.md",
+        "skills/genai-search-optimizer/references/technical-seo-checklist.md",
+        "skills/genai-search-optimizer/references/ecommerce-and-local-signals.md",
+        "skills/genai-search-optimizer/references/action-plan-template.md",
+        "skills/genai-search-optimizer/references/source-notes.md"
+      ]
     }
   ]
 }
