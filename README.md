@@ -25,6 +25,7 @@ npx skills add evanwhl508/ai-agent-skills --list
 # Install one skill
 npx skills add evanwhl508/ai-agent-skills --skill prompt-harness-architect
 npx skills add evanwhl508/ai-agent-skills --skill genai-search-optimizer
+npx skills add evanwhl508/ai-agent-skills --skill image-generation-infra
 
 # Install all skills in the collection
 npx skills add evanwhl508/ai-agent-skills --skill '*'
