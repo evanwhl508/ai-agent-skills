@@ -10,6 +10,7 @@ This repo is designed as a multi-skill collection: one repository, one folder pe
 |---|---|---|
 | [`prompt-harness-architect`](skills/prompt-harness-architect/SKILL.md) | v0.1 | Design, critique, and improve production LLM prompts, chatbot system prompts, multimodal document/image review harnesses, structured outputs, and eval cases. |
 | [`genai-search-optimizer`](skills/genai-search-optimizer/SKILL.md) | v0.1 | Audit and improve a page or site for visibility in Google's generative AI search (AI Overviews, AI Mode) using Google Search Central's official guidance. Refuses AEO/GEO myths with citations. |
+| [`image-generation-infra`](skills/image-generation-infra/SKILL.md) | v0.1 | Set up the infrastructure for consistent, resumable AI image generation: asset manifest, style guide derived from the codebase (or confirmed by interview), design sheets, references, prompt templates, QA rules, and generation state files. Setup only — a separate image-generation skill executes the jobs. |
 
 ## Install
 
@@ -97,11 +98,20 @@ ai-agent-skills/
 |   |   |-- agents/
 |   |   |   `-- openai.yaml
 |   |   `-- references/
-|   `-- genai-search-optimizer/
+|   |-- genai-search-optimizer/
+|   |   |-- SKILL.md
+|   |   |-- agents/
+|   |   |   `-- openai.yaml
+|   |   `-- references/
+|   `-- image-generation-infra/
 |       |-- SKILL.md
 |       |-- agents/
 |       |   `-- openai.yaml
-|       `-- references/
+|       |-- references/
+|       |-- assets/
+|       |   |-- templates/
+|       |   `-- schemas/
+|       `-- scripts/
 |-- manifests/
 |   |-- skills.json
 |   `-- adapters.json

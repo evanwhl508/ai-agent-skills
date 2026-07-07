@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/evanwhl508/ai-agent-skills/skills/image-generation-infra/assets.schema.json",
+  "title": "Image asset manifest",
+  "type": "object",
+  "required": ["version", "project", "assets"],
+  "properties": {
+    "version": { "const": 1 },
+    "project": {
+      "type": "object",
+      "required": ["name", "output_root", "global_style", "palette", "negative_rules", "prompt_templates", "qa_checklist"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "output_root": { "type": "string", "minLength": 1 },
+        "global_style": { "type": "string" },
+        "palette": { "type": "string" },
+        "negative_rules": { "type": "string" },
+        "prompt_templates": { "type": "string" },
+        "qa_checklist": { "type": "string" }
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "format": { "type": "string" },
+        "quality": { "type": "string" },
+        "background": { "type": "string" },
+        "overwrite": { "type": "boolean" },
+        "max_attempts": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/asset" }
+    }
+  },
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "required": ["id", "category", "type", "status", "generation", "output"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" },
+        "category": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "status": {
+          "enum": ["pending", "queued", "generating", "generated", "qa_failed", "retry_pending", "approved", "rejected", "blocked"]
+        },
+        "subject": {
+          "type": "object",
+          "required": ["sheet"],
+          "properties": {
+            "sheet": { "type": "string" },
+            "references": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "references_missing": { "type": "boolean" },
+        "generation": {
+          "type": "object",
+          "required": ["description"],
+          "properties": {
+            "description": { "type": "string", "minLength": 1 },
+            "orientation": { "type": "string" },
+            "size": { "type": "string", "pattern": "^[0-9]+x[0-9]+$" },
+            "aspect_ratio": { "type": "string" },
+            "background": { "type": "string" },
+            "variants": { "type": "integer", "minimum": 1 },
+            "frames": { "type": "integer", "minimum": 1 },
+            "frame_layout": { "type": "string", "pattern": "^[0-9]+x[0-9]+$" },
+            "baseline": { "type": "string" },
+            "safe_area": { "type": "string" },
+            "text_content": { "type": "string" },
+            "locale": { "type": "string" },
+            "seed": { "type": "integer" }
+          }
+        },
+        "output": {
+          "type": "object",
+          "required": ["path"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 }
+          }
+        },
+        "qa": {
+          "type": "object",
+          "properties": {
+            "must_have": { "type": "array", "items": { "type": "string" } },
+            "must_not_have": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "max_attempts": { "type": "integer", "minimum": 1 },
+        "depends_on": { "type": "array", "items": { "type": "string" } },
+        "platform": { "type": "string" },
+        "priority": { "type": "integer" },
+        "batch_group": { "type": "string" },
+        "parent": { "type": "string" },
+        "retry_reason": { "type": "string" }
+      }
+    }
+  }
+}

@@ -52,6 +52,33 @@
         "skills/genai-search-optimizer/references/action-plan-template.md",
         "skills/genai-search-optimizer/references/source-notes.md"
       ]
+    },
+    {
+      "name": "image-generation-infra",
+      "displayName": "Image Generation Infra",
+      "description": "Set up the reusable infrastructure for consistent, repeatable, and resumable AI image generation: asset manifests, style guides derived from the codebase (or confirmed by user interview), design sheets, reference structures, prompt templates, QA rules, and generation state files. Prepares jobs; a separate image-generation skill executes them.",
+      "path": "skills/image-generation-infra",
+      "installable": true,
+      "targets": ["codex", "claude-code", "generic"],
+      "tags": [
+        "image-generation",
+        "asset-pipeline",
+        "asset-manifest",
+        "style-guide",
+        "prompt-templates",
+        "game-assets",
+        "app-assets",
+        "batch-generation",
+        "qa",
+        "resumable-workflows"
+      ],
+      "references": [
+        "skills/image-generation-infra/references/project-structure.md",
+        "skills/image-generation-infra/references/style-discovery.md",
+        "skills/image-generation-infra/references/asset-manifest-schema.md",
+        "skills/image-generation-infra/references/prompt-composition.md",
+        "skills/image-generation-infra/references/qa-guidelines.md"
+      ]
     }
   ]
 }

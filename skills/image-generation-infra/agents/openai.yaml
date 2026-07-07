@@ -1,0 +1,4 @@
+interface:
+  display_name: "Image Generation Infra"
+  short_description: "Set up the manifest, style docs, prompt templates, QA rules, and state files for consistent, resumable AI image generation."
+  default_prompt: "Prepare image-generation infrastructure for this project. Inspect the repo, derive the visual style from existing assets and theme files (or interview me if there is no visual signal), create the design docs, reference folders, assets.yaml manifest, QA rules, and generation state files, validate everything, and give me the ready-to-run batch-generation command."

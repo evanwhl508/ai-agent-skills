@@ -1,0 +1,47 @@
+# Asset manifest — the source of truth for planned image assets.
+# Field documentation: see the skill's references/asset-manifest-schema.md
+# Validate with: python scripts/validate_manifest.py <project-root>
+
+version: 1
+
+project:
+  name: TODO Project Name
+  output_root: generated-assets
+  global_style: design/image-generation/style.md
+  palette: design/image-generation/palette.md
+  negative_rules: design/image-generation/negative-prompt-rules.md
+  prompt_templates: design/image-generation/prompt-templates.md
+  qa_checklist: design/image-generation/qa-checklist.md
+
+defaults:
+  format: png
+  quality: high
+  background: transparent
+  overwrite: false
+  max_attempts: 2
+
+assets:
+  # Example entry — replace with real assets.
+  - id: example_character_idle
+    category: characters
+    type: single_sprite
+    status: pending
+    subject:
+      sheet: design/image-generation/characters/example-character.md
+      references:
+        - design/image-generation/references/characters/example-character-master-reference.png
+    generation:
+      description: TODO — the pose / moment / composition for this asset.
+      orientation: side view facing right
+      size: 1024x1024
+      background: transparent
+      variants: 1
+    output:
+      path: generated-assets/characters/example-character/example_character_idle.png
+    qa:
+      must_have:
+        - complete subject visible
+        - same proportions as the canonical reference
+      must_not_have:
+        - opaque background
+        - additional equipment
