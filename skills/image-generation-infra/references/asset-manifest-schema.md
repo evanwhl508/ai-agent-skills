@@ -4,6 +4,22 @@ The manifest is the source of truth for planned image assets. Generation tools r
 
 A machine-validatable JSON Schema ships alongside this skill at `assets/schemas/assets.schema.json`; copy it into the project as `design/assets.schema.json` and run `scripts/validate_manifest.py` against the manifest.
 
+**This document describes the Full-tier manifest.** For a Lite-tier project (a handful of recurring subjects, occasional bursts), most of these fields are ceremony you will not use. A Lite manifest is a flat, human-readable list — enough to know what to generate, from which reference, to where:
+
+```yaml
+project:
+  name: My Game
+  style: design/image-generation/style.md
+assets:
+  - id: skinny_skeleton_idle
+    references: [design/image-generation/references/characters/skinny-skeleton-master-reference.png]
+    description: Idle pose, sword resting on shoulder, side view facing right.
+    output: generated-assets/characters/skinny_skeleton_idle.png
+    must_not_have: [opaque background, extra weapons]
+```
+
+Skip the schema, statuses, and state files until asset volume actually justifies them, then escalate to the Full structure below via the **Extend** mode. Do not start here for a dozen assets.
+
 ## Top level
 
 ```yaml

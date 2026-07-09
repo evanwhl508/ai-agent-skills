@@ -8,6 +8,8 @@ The infrastructure lives in three top-level trees with distinct jobs:
 
 Keeping the trees separate means you can always answer: "what did we decide?" (`design/`), "what do we have?" (`generated-assets/`), and "where are we in the run?" (`image-generation/`).
 
+The layout below is the **Full tier**. A Lite-tier project uses only the `design/` tree (style guide, references with locked masters, design sheets, a flat `assets.yaml`) and a plain `generated-assets/` output folder — no `image-generation/` run-state tree, no schema, no state files. Stand those up only when batch volume justifies resumability.
+
 ## Full layout
 
 ```text

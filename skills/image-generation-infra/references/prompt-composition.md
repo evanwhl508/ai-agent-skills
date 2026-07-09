@@ -1,6 +1,8 @@
 # Prompt Composition
 
-Final generation prompts are assembled, not hand-written. Every prompt for every asset is composed from the same sources in the same order, so consistency comes from the structure rather than from an author remembering to repeat themselves.
+Final generation prompts are assembled, not hand-written. Every prompt for every asset is composed from the same sources in the same order, so the *framing* stays uniform rather than depending on an author remembering to repeat themselves.
+
+First, a reality check on what the prompt does and does not do. **Subject identity — same face, same proportions, same design across generations — is held by the master reference image fed to the model (image-to-image / reference-conditioning / LoRA), not by the prompt text.** The composed prompt supplies everything *around* identity: the pose, the camera, the technical output, the exclusions. Layer 3 (subject identity) below is there to reinforce and disambiguate the reference, never to replace it. If you find yourself writing longer and longer identity descriptions hoping the character stops drifting, that is the signal you are missing a reference-image input, not missing words.
 
 ## The composition order
 

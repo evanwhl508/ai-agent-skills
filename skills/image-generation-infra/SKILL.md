@@ -13,12 +13,40 @@ The infrastructure must support both interactive generation inside an agent sess
 
 ## Core Principles
 
+- **Consistency comes from reference images, not prose.** This is the most important principle, and the easiest to get wrong. The single strongest lever for keeping a character or object looking the same across generations is feeding the generator a *locked master reference image* — via image-to-image, an IP-Adapter or reference-conditioning input, or a fine-tune/LoRA trained on the subject. The text stack (style guide, design sheet, composed prompt) is essential supporting context, but text alone cannot hold identity stable; diffusion models drift no matter how precise the words. So for every recurring subject, establish and lock one canonical master reference *early*, and make every asset of that subject condition on it. Treat the design sheet as the description *of* that reference, not a substitute for it.
 - **Style is discovered, never assumed.** If the project has a codebase, existing assets, or design docs, derive the style guide from that evidence and cite it. If it has none, interview the user until the style and vibe are explicitly confirmed. Never invent a style silently — a style guide that contradicts the product poisons every asset generated from it.
-- **`assets.yaml` is the source of truth.** Every planned asset lives in the manifest with a stable ID, status, design-sheet path, references, output path, and QA rules. Nothing is "done" because a file exists on disk.
-- **Identity lives in design sheets; poses live in the manifest.** A character sheet describes what never changes about the subject. The manifest entry describes this asset's pose, size, and output. Never duplicate full subject descriptions into `style.md`.
-- **Prompts are composed, not stored.** Final prompts are assembled from manifest fields in a deterministic order defined by `prompt-templates.md`. Hand-writing every final prompt defeats consistency and reuse.
+- **Identity lives in design sheets; poses live in the manifest.** A design sheet describes what never changes about the subject and points at its master reference. The manifest entry describes this asset's pose, size, and output. Never duplicate full subject descriptions into `style.md`.
+- **The manifest is the source of truth.** Every planned asset lives in the manifest (`assets.yaml`) with a stable ID, its subject's references, an output path, and QA notes. Nothing is "done" because a file exists on disk.
+- **Prompts are composed, not stored.** The composed prompt is assembled in a deterministic order from the design files — it supplies framing, pose, and technical requirements around the reference image. Hand-writing every final prompt from memory invites drift.
 - **QA splits deterministic from visual.** Scripts check files, formats, dimensions, and paths. Model or human judgement checks identity, style, and composition. Auto-retry obvious failures; never claim subjective visual consistency is guaranteed.
-- **State files make runs resumable.** Queue, completed, failed, and retry files track every asset's lifecycle. Never infer completion from an output filename existing.
+- **Right-size the ceremony.** Most projects have a handful of recurring subjects, not thousands of assets. Default to the Lite tier below; only stand up the full manifest schema, state files, and validation scripts when asset volume actually justifies them. Building a batch pipeline for a dozen assets is its own failure mode.
+
+## Choose the tier first
+
+Before anything else, decide how much infrastructure the project actually warrants. The tiers share the same shape — reference images carry identity, a style guide sets the look, a manifest lists the work — they differ only in ceremony.
+
+**Lite (default).** For a solo project or anything up to roughly 20–30 recurring subjects generated in occasional bursts. The generation loop here is tight and visual — generate, look, nudge, regenerate — so keep friction low:
+
+- `design/image-generation/style.md` (palette folded in unless it is large)
+- `design/image-generation/references/` with a **locked master reference per recurring subject** — this is where the real consistency lives
+- a design sheet per recurring subject (skip for one-off assets)
+- a flat `design/assets.yaml` — a simple list of assets, no schema ceremony, no state files
+- `sample-prompts.md` and the generation command
+
+Run the workflow below but **skip steps 9 (state files) and 10 (validation scripts)**, keep step 8 a flat list, and drop the standalone `negative-prompt-rules.md`/`qa-checklist.md` and the schema. Everything else — inspect, style, structure, references, design sheets, prompt templates, the image-gen skill, sample prompts, the command — still applies.
+
+**Full (opt-in, for scale).** Escalate when the project has many assets (sprite sheets, large icon sets, localized variants), an ongoing cadence, or multiple people needing an auditable pipeline. Adds to Lite:
+
+- `negative-prompt-rules.md` and `qa-checklist.md` as standalone files
+- the full `assets.yaml` schema + `assets.schema.json`
+- state files (queue, completed, failed, retry, log) for resumable batch runs
+- the validation/queue/diff scripts
+
+All 13 steps. Start Lite and migrate up with the **Extend** mode when volume grows — never the reverse.
+
+Whichever tier, the reference-image work and the style guide are non-negotiable; the manifest/state machinery is what scales.
+
+Note: even for a project that never runs a batch, the design sheets, style guide, and locked references have standalone value as a design bible — a handoff artifact and a single source of visual truth.
 
 ## Operating Modes
 
@@ -82,9 +110,19 @@ image-generation/
 - **`negative-prompt-rules.md`** — layered exclusions: global, anatomy and character, composition, text and typography, technical output, genre-specific, project-specific. Reusable rules only; asset-specific poses do not belong here.
 - **`qa-checklist.md`** — deterministic checks separated from visual checks. Read `references/qa-guidelines.md` for the split and its rationale.
 
-### 5. Create reference infrastructure
+### 5. Establish and lock the master references
 
-Create the category folders under `design/image-generation/references/` and a README that explains what belongs in each folder, which images are authoritative, and how obsolete references are handled. Filenames must be meaningful (`skinny-skeleton-master-reference.png`, `graveyard-lighting-reference.png`) — never `image1.png` or `reference-final-final.png`. The manifest points at specific reference files; never assume every reference applies to every asset.
+This is the load-bearing step for consistency (see the first core principle), not a folder-creation chore. For every recurring subject, the project needs one **locked master reference image** that every future asset of that subject will condition on.
+
+Create the category folders under `design/image-generation/references/` with a README covering what belongs where, which image is authoritative, and how obsolete references are archived (never deleted). Filenames must be meaningful (`skinny-skeleton-master-reference.png`, `graveyard-lighting-reference.png`) — never `image1.png` or `reference-final-final.png`.
+
+Then, for each recurring subject, secure its master reference:
+
+- If an authoritative image already exists (existing sprite, approved concept art), designate it the master and record it.
+- If none exists, the *first* generation job for that subject is to produce and lock its master reference — a clean, canonical, front-or-three-quarter view. Every subsequent asset of that subject references it (image-to-image / reference-conditioning) rather than re-rolling identity from text. Flag this ordering in the manifest via `depends_on` so pose assets wait for their master.
+- Record which model input the reference feeds (image-to-image, IP-Adapter, style/character reference, or training a LoRA) so the execution skill knows how to use it, not just that it exists.
+
+The manifest points at specific reference files per asset; never assume every reference applies to every asset.
 
 ### 6. Create subject design sheets
 
@@ -96,15 +134,19 @@ One Markdown sheet per reusable visual subject (`characters/skinny-skeleton.md`,
 
 ### 8. Create the asset manifest
 
-Create `design/assets.yaml` from `assets/templates/assets.template.yaml`. Every asset needs a stable ID, category, type, status, design-sheet path, reference paths, description, orientation, dimensions, background rule, output path, variants, QA requirements, and max attempts. Read `references/asset-manifest-schema.md` for field-by-field documentation and the status lifecycle. Copy `assets/schemas/assets.schema.json` into the project as `design/assets.schema.json`.
+Create `design/assets.yaml` from `assets/templates/assets.template.yaml`. Every asset needs a stable ID, its subject's reference paths, an asset-specific description, orientation, dimensions, background rule, output path, and QA notes.
 
-### 9. Create generation state files
+**Lite tier:** keep it a flat list — ID, references, description, output path, must-have/must-not-have. Skip status lifecycle, schema, and per-asset ceremony you will not use. A short manifest a human can read at a glance is the point.
 
-`generation-queue.json`, `completed-assets.json`, `failed-assets.json`, `retry-assets.yaml`, and `asset-generation-log.md`. Track at least: asset ID, status, attempt count, timestamp, output paths, failure reason, retry decision, review status, selected variant.
+**Full tier:** add category, type, status, variants, max attempts, and dependencies; read `references/asset-manifest-schema.md` for field-by-field documentation and the status lifecycle; copy `assets/schemas/assets.schema.json` into the project as `design/assets.schema.json`.
 
-### 10. Validate
+### 9. Create generation state files *(Full tier)*
 
-Run `scripts/validate_manifest.py <project-root>` before declaring setup complete. It checks unique IDs, unique and contained output paths, required fields, valid statuses, and that every referenced file exists or is explicitly marked missing. `scripts/find_missing_assets.py` diffs the manifest against disk without trusting filenames as completion; `scripts/build_generation_queue.py` builds the queue from manifest statuses. Produce a concise validation report.
+Skip for Lite. For resumable batch runs, create `generation-queue.json`, `completed-assets.json`, `failed-assets.json`, `retry-assets.yaml`, and `asset-generation-log.md`. Track at least: asset ID, status, attempt count, timestamp, output paths, failure reason, retry decision, review status, selected variant.
+
+### 10. Validate *(Full tier)*
+
+Skip for Lite (a flat manifest is eyeballed, not validated). For Full-tier setups, run `scripts/validate_manifest.py <project-root>` before declaring setup complete. It checks unique IDs, unique and contained output paths, required fields, valid statuses, and that every referenced file exists or is explicitly marked missing. `scripts/find_missing_assets.py` diffs the manifest against disk without trusting filenames as completion; `scripts/build_generation_queue.py` builds the queue from manifest statuses. Produce a concise validation report.
 
 ### 11. Prepare the image-generation skill
 
@@ -130,7 +172,9 @@ Before generating each asset:
 
 1. Read the global files referenced under project.
 2. Read the asset's subject sheet.
-3. Read only the reference images listed by that asset.
+3. Load the master reference image(s) listed by that asset and feed them to
+   the model as conditioning input (image-to-image / reference / IP-Adapter) —
+   this is what holds identity stable, not the prompt text alone.
 4. Compose the prompt using design/image-generation/prompt-templates.md,
    following the worked examples in design/image-generation/sample-prompts.md.
 5. Generate the declared number of variants.
@@ -159,20 +203,20 @@ Stop only when every processable asset is approved, rejected, or blocked.
 
 ## Completion Criteria
 
-Setup is complete only when:
+Setup is complete only when (Full tier — for Lite, items 3, 7, and the validation half of 6 are optional):
 
 1. the folder structure exists;
-2. the global design files exist and the style was either derived from evidence or confirmed by the user;
-3. `assets.yaml` passes validation;
-4. asset output paths are defined;
-5. reference folders and naming rules are documented;
-6. QA rules exist;
-7. progress and retry files exist;
-8. the actual image-generation skill is identified or created;
+2. the style guide exists and the style was either derived from evidence or confirmed by the user;
+3. every recurring subject has a locked master reference recorded (or its master-reference job is queued as the first asset);
+4. the manifest lists each asset with its references and output path;
+5. asset output paths are defined and reference naming rules are documented;
+6. QA notes exist (Full tier: `assets.yaml` also passes validation);
+7. progress and retry state files exist (Full tier only);
+8. the actual image-generation skill is identified or created, and how references feed it is documented;
 9. sample composed prompts exist for representative assets;
 10. a ready-to-run generation instruction is produced;
 11. unresolved requirements are clearly listed.
 
 ## Expected Output
 
-At the end of a run, report: the mode executed, how the style was established (evidence-derived with citations, or user-confirmed via interview), what was created or changed, the validation result, the identified image-generation skill, a pointer to the sample composed prompts, the ready-to-run generation command, and an explicit list of unresolved `TODO`s.
+At the end of a run, report: the tier chosen (Lite/Full) and why, the mode executed, how the style was established (evidence-derived with citations, or user-confirmed via interview), the master-reference status per recurring subject (locked, or first-job-queued), what was created or changed, the validation result (Full tier), the identified image-generation skill and how references feed it, a pointer to the sample composed prompts, the ready-to-run generation command, and an explicit list of unresolved `TODO`s.
