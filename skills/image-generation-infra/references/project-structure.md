@@ -19,6 +19,7 @@ design/
 |   |-- negative-prompt-rules.md     # layered reusable exclusions
 |   |-- prompt-templates.md          # composition order + per-asset-type templates
 |   |-- qa-checklist.md              # deterministic checks + visual checks
+|   |-- sample-prompts.md            # composed example prompts for pre-flight review
 |   |-- references/
 |   |   |-- README.md                # folder purposes, naming, authority, obsolescence
 |   |   |-- global/                  # style/mood boards that apply project-wide

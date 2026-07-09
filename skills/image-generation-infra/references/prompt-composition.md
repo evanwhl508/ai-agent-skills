@@ -57,6 +57,14 @@ The bracketed numbers are for this document only — omit them in real prompts.
 - **App-store graphic** — platform dimension requirements, safe areas, device-frame conventions if used.
 - **Portrait / card artwork** — tighter camera, expression from the permitted list in the design sheet, card-frame safe area.
 
+## Sample prompts (pre-flight)
+
+Before the first generation run, compose one to three full prompts by hand from real manifest entries — ideally covering different asset types — and save them to `design/image-generation/sample-prompts.md`, labelled with their asset IDs.
+
+This is the pre-flight check for the whole pipeline. The hand-off to the execution skill is the weakest joint: the executor must map manifest fields into the target model's actual syntax (parameter suffixes, node graphs, or plain API arguments), and that translation is easiest to get right when it starts from a concrete, correctly composed example rather than from the abstract composition order. The samples also let the user catch a wrong-reading prompt — a style rule that composes badly, a design sheet missing an invariant — before spending generation credits at scale.
+
+Keep the samples model-neutral (the nine layers, no model-specific flags); model syntax is the execution skill's job. Regenerate them whenever `style.md`, the design sheets, or the templates change materially.
+
 ## Rules
 
 - Never paste a full design sheet into a prompt; extract the invariants (layer 3) and let the reference image carry the rest.

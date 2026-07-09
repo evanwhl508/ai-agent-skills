@@ -60,7 +60,7 @@ Scaffold the standard layout (full annotated version in `references/project-stru
 design/
 |-- image-generation/
 |   |-- README.md, style.md, palette.md, negative-prompt-rules.md,
-|   |   prompt-templates.md, qa-checklist.md
+|   |   prompt-templates.md, qa-checklist.md, sample-prompts.md
 |   |-- references/{global,characters,objects,environments,ui,branding}/
 |   `-- characters/ objects/ environments/ ui/ branding/   (design sheets)
 |-- assets.yaml
@@ -110,7 +110,13 @@ Run `scripts/validate_manifest.py <project-root>` before declaring setup complet
 
 Check whether a suitable image-generation skill is already installed. If yes: identify its invocation name, document how this infrastructure calls it, and do not duplicate it. If no: create or install one via the harness's skill-creation mechanism, keep generation behavior separate from this skill, and document required API keys, dependencies, models, and permissions. Never place secrets in the repository.
 
-### 12. Produce the final generation command
+### 12. Compose sample prompts
+
+The hand-off to the execution skill is the weakest joint in the pipeline: "compose the prompt from the templates" is one line of instruction, but the executor still has to map manifest fields into the target model's actual syntax. De-risk it before any generation runs.
+
+Pick one to three representative manifest entries (ideally covering different asset types) and compose their full prompts by hand, walking the complete composition order against the real style guide, design sheets, and negative rules. Save them to `design/image-generation/sample-prompts.md`, labelled with their asset IDs. This buys two things: the user can eyeball the composed output and fix the design files before burning generation credits, and the execution skill gets few-shot examples of a correctly composed prompt so it only has to add model-specific syntax on top. Regenerate the samples whenever the style guide or templates change materially.
+
+### 13. Produce the final generation command
 
 Output a ready-to-run instruction for the target harness, using paths that actually exist in the project:
 
@@ -125,7 +131,8 @@ Before generating each asset:
 1. Read the global files referenced under project.
 2. Read the asset's subject sheet.
 3. Read only the reference images listed by that asset.
-4. Compose the prompt using design/image-generation/prompt-templates.md.
+4. Compose the prompt using design/image-generation/prompt-templates.md,
+   following the worked examples in design/image-generation/sample-prompts.md.
 5. Generate the declared number of variants.
 6. Save outputs exactly to the declared output path.
 7. Run deterministic QA checks.
@@ -162,9 +169,10 @@ Setup is complete only when:
 6. QA rules exist;
 7. progress and retry files exist;
 8. the actual image-generation skill is identified or created;
-9. a ready-to-run generation instruction is produced;
-10. unresolved requirements are clearly listed.
+9. sample composed prompts exist for representative assets;
+10. a ready-to-run generation instruction is produced;
+11. unresolved requirements are clearly listed.
 
 ## Expected Output
 
-At the end of a run, report: the mode executed, how the style was established (evidence-derived with citations, or user-confirmed via interview), what was created or changed, the validation result, the identified image-generation skill, the ready-to-run generation command, and an explicit list of unresolved `TODO`s.
+At the end of a run, report: the mode executed, how the style was established (evidence-derived with citations, or user-confirmed via interview), what was created or changed, the validation result, the identified image-generation skill, a pointer to the sample composed prompts, the ready-to-run generation command, and an explicit list of unresolved `TODO`s.

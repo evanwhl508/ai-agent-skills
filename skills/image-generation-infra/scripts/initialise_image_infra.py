@@ -39,6 +39,7 @@ TEMPLATE_TARGETS = {
     "negative-prompt-rules.template.md": "design/image-generation/negative-prompt-rules.md",
     "prompt-templates.template.md": "design/image-generation/prompt-templates.md",
     "qa-checklist.template.md": "design/image-generation/qa-checklist.md",
+    "sample-prompts.template.md": "design/image-generation/sample-prompts.md",
     "assets.template.yaml": "design/assets.yaml",
 }
 
@@ -64,6 +65,9 @@ IG_README = """# Image Generation Design Files
 - `style.md`, `palette.md`, `negative-prompt-rules.md`, `prompt-templates.md`,
   `qa-checklist.md` — global design files. Human edits here are authoritative;
   generation tooling must not rewrite them.
+- `sample-prompts.md` — full prompts composed by hand from real manifest
+  entries: a pre-flight check for humans and few-shot examples for the
+  execution skill. Regenerate when style or templates change materially.
 - `references/` — reference images by category (see its README).
 - `characters/`, `objects/`, `environments/`, `ui/`, `branding/` — one design
   sheet per reusable subject; sheets describe identity, the manifest describes
